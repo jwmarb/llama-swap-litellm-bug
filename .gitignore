@@ -1,0 +1,4 @@
+*.gguf
+llama-swap/
+llama.cpp/
+config.yaml

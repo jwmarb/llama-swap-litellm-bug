@@ -1,0 +1,6 @@
+model_list:
+  - model_name: smollm2
+    litellm_params:
+      api_base: http://host.docker.internal:8080/v1
+      api_key: none
+      model: openai/smollm2

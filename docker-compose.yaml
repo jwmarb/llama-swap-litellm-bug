@@ -1,0 +1,33 @@
+services:
+  database:
+    container_name: postgres
+    image: postgres:latest
+    networks:
+      litellm:
+        aliases:
+          - database
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  litellm:
+    container_name: litellm
+    image: ghcr.io/berriai/litellm:main-latest
+    ports:
+      - 4000:4000
+    volumes:
+      - ./litellm-config.yaml:/app/config.yaml
+    command: ['--config', '/app/config.yaml', '--port', '4000']
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@database:5432/postgres
+      - LITELLM_SALT_KEY=test
+      - LITELLM_MASTER_KEY=master
+      - STORE_MODEL_IN_DB=False
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - litellm
+
+networks:
+  litellm:
+    driver: bridge
